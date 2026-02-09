@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 
-const Button = ({title,onPress}:any) => {
+const Button = ({title,onPress, containerStyle}:any) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   )
@@ -15,17 +15,17 @@ const styles = StyleSheet.create({
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-        borderRadius:12,
+        borderRadius:15,
         backgroundColor:'yellow',
         width:scale(315),
-height: verticalScale(52),
+height: verticalScale(45),
 
 
 
     },
     text:{
-        fontWeight:500,
-        fontSize:moderateScale(16),
+        fontWeight:'600',
+        fontSize:moderateScale(18),
         textAlign:'center',
 
     }

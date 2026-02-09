@@ -15,14 +15,16 @@ const AuthLayout = ({ title, subtitle, children }: Props) => {
       colors={['#FFF9D6', '#FFFFFF']}
       style={styles.container}
     >
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.innerContainer}>
+        <Text style={styles.title}>{title}</Text>
 
-      {subtitle && (
-        <Text style={styles.subtitle}>{subtitle}</Text>
-      )}
+        {subtitle && (
+          <Text style={styles.subtitle}>{subtitle}</Text>
+        )}
 
-      <View style={styles.content}>
-        {children}
+        <View style={styles.content}>
+          {children}
+        </View>
       </View>
     </LinearGradient>
   );
@@ -33,14 +35,19 @@ export default AuthLayout;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
     
   },
   title: {
-    width:scale(120),
+    // width:scale(120),
     fontSize: moderateScale(28),
     fontWeight: 'bold',
     marginTop: 40,
+  },
+   innerContainer: {
+    flex: 1,
+    paddingHorizontal: 20, 
+    paddingTop: 40,
   },
   subtitle: {
     marginTop: 10,

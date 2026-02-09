@@ -10,8 +10,8 @@ import {
   SafeAreaProvider,
  
 } from 'react-native-safe-area-context';
-import Button from './src/components/common/Button';
-import Login from './src/screens/public/auth/Login';
+
+import AppNavigator from './src/navigation/StackNavigation';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -20,7 +20,7 @@ function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Login/>
+      <AppNavigator/>
      
     </SafeAreaProvider>
   );

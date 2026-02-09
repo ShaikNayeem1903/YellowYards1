@@ -2,17 +2,22 @@ import React from 'react'
 import AuthLayout from '../../../components/common/AuthLayout'
 import Button from '../../../components/common/Button'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useForm, Controller } from 'react-hook-form';
 import { TextInput, View, Text } from 'react-native';
 import { moderateScale, verticalScale } from 'react-native-size-matters'
+import Feather from 'react-native-vector-icons/Feather';
+
+
 
 
 type FormData = {
   email: string;
 };
 
-const Login = () => {
+const Login = ({navigation}:any) => {
+
+  
 
     const {
     control,
@@ -22,6 +27,7 @@ const Login = () => {
 
   const onSubmit = (data: FormData) => {
     console.log('Email:', data.email);
+      navigation.navigate('Verify');
   };
 
 
@@ -62,9 +68,19 @@ const Login = () => {
         </Text>
       )}
   
-  <Button title="Continue" onPress={onSubmit} />
+ <Button title="Continue" onPress={handleSubmit(onSubmit)} />
+
+<View style={styles.continueWithView}>
+  <Text style={styles.continueWithText}>Or Continue with</Text>
+</View>
+
+<TouchableOpacity style={styles.mobileNumberBtn}>
+      <Feather name="phone" size={18} color="#000" />
+      <Text style={styles.mobileNumberText}>Mobile Number</Text>
+</TouchableOpacity>
   
 </AuthLayout>
+
 
     </SafeAreaView>
   )
@@ -72,6 +88,8 @@ const Login = () => {
 const styles = StyleSheet.create({
     container:{
         flex:1,
+        
+      
         
     },
 
@@ -87,8 +105,13 @@ const styles = StyleSheet.create({
 
     },
     emailTextError:{
-         color: 'red', marginTop: 5
-    },
+        
+  color: '#FF4D4F', 
+  fontSize: 15,
+  marginBottom: verticalScale(15),
+},
+
+ 
     label: {
   fontSize: moderateScale(14),
   fontWeight:'bold',
@@ -96,6 +119,33 @@ const styles = StyleSheet.create({
   marginBottom: moderateScale(5),
   paddingLeft:moderateScale(5),
 },
+continueWithView:{
+
+  marginTop:verticalScale(20)
+},
+continueWithText:{
+  textAlign:'center',
+  fontWeight:'semibold',
+  fontSize:moderateScale(16)
+},
+mobileNumberBtn:{
+  flexDirection:'row',
+  borderWidth:2,
+justifyContent:'center',
+alignItems:'center',
+borderRadius:8,
+marginTop:verticalScale(20),
+borderColor:'#F39519',
+height:verticalScale(40),
+gap:30
+},
+mobileNumberText:{
+  fontSize:18
+
+
+
+
+  }
 })
 
 export default Login

@@ -1,11 +1,23 @@
 import { View, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Images from '../../../theams/images'
 import LinearGradient from 'react-native-linear-gradient'
 import { scale, verticalScale } from 'react-native-size-matters'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../navigation/StackNavigation';
 
-const Splash = () => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
+const Splash = ({ navigation }: Props) => {
+
+    useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Login'); 
+    }, 3000); 
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <SafeAreaView>
 
