@@ -12,7 +12,8 @@ const Splash = ({ navigation }: Props) => {
 
     useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Login'); 
+      navigation.replace('GetStarted');
+
     }, 3000); 
 
     return () => clearTimeout(timer);

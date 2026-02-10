@@ -5,14 +5,15 @@ import AuthLayout from '../../../components/common/AuthLayout';
 import Button from '../../../components/common/Button';
 import { Controller, useForm } from 'react-hook-form';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Feather';
+
 type FormData = {
-  password: string;
+  newPassword: string;
   confirmPassword: string;
 };
 
-const SetPassword = ({ navigation }: any) => {
-  const [securePass, setSecurePass] = useState(true);
+const ResetPassword = ({ navigation }: any) => {
+  const [secureNew, setSecureNew] = useState(true);
   const [secureConfirm, setSecureConfirm] = useState(true);
 
   const {
@@ -22,26 +23,29 @@ const SetPassword = ({ navigation }: any) => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const passwordValue = watch('password');
+  const newPasswordValue = watch('newPassword');
 
   const onSubmit = (data: FormData) => {
-    console.log('Password Set:', data);
-    navigation.navigate('ForgetPassword');
+    console.log('Password Reset:', data);
+
+    // API call here later
+    // navigation.navigate('Login');
+    navigation.navigate('Tabs');
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <AuthLayout
-        title="Set Password"
+        title="Reset Password"
         subtitle="It is a long established fact that a reader will be distracted by the readable content of"
       >
 
-        {/* PASSWORD */}
+        {/* NEW PASSWORD */}
         <Controller
           control={control}
-          name="password"
+          name="newPassword"
           rules={{
-            required: 'Password is required',
+            required: 'New password is required',
             minLength: {
               value: 6,
               message: 'Minimum 6 characters required',
@@ -49,25 +53,25 @@ const SetPassword = ({ navigation }: any) => {
           }}
           render={({ field: { onChange, value } }) => (
             <View style={styles.inputBox}>
-              <Text style={styles.label}>Password</Text>
+              <Text style={styles.label}>New Password</Text>
               <View style={styles.row}>
                 <TextInput
-                  placeholder="Enter password"
-                  secureTextEntry={securePass}
+                  placeholder="Enter new password"
+                  secureTextEntry={secureNew}
                   value={value}
                   onChangeText={onChange}
                   style={styles.input}
                 />
-                <TouchableOpacity onPress={() => setSecurePass(!securePass)}>
-                  <Icon name={securePass ? 'eye-off' : 'eye'} size={20} />
+                <TouchableOpacity onPress={() => setSecureNew(!secureNew)}>
+                  <Icon name={secureNew ? 'eye-off' : 'eye'} size={20} />
                 </TouchableOpacity>
               </View>
             </View>
           )}
         />
 
-        {errors.password && (
-          <Text style={styles.error}>{errors.password.message}</Text>
+        {errors.newPassword && (
+          <Text style={styles.error}>{errors.newPassword.message}</Text>
         )}
 
         {/* CONFIRM PASSWORD */}
@@ -77,7 +81,7 @@ const SetPassword = ({ navigation }: any) => {
           rules={{
             required: 'Confirm password is required',
             validate: (value) =>
-              value === passwordValue || 'Passwords do not match',
+              value === newPasswordValue || 'Passwords do not match',
           }}
           render={({ field: { onChange, value } }) => (
             <View style={styles.inputBox}>
@@ -149,4 +153,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default SetPassword;
+export default ResetPassword;

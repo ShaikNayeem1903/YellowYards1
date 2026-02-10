@@ -6,7 +6,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useForm, Controller } from 'react-hook-form';
 import { TextInput, View, Text } from 'react-native';
 import { moderateScale, verticalScale } from 'react-native-size-matters'
-import Feather from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 
@@ -75,7 +75,7 @@ const Login = ({navigation}:any) => {
 </View>
 
 <TouchableOpacity style={styles.mobileNumberBtn}>
-      <Feather name="phone" size={18} color="#000" />
+      <Icon name="phone" size={30} color="#F39519" />
       <Text style={styles.mobileNumberText}>Mobile Number</Text>
 </TouchableOpacity>
   
