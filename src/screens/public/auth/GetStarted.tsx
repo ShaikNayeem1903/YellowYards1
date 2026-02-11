@@ -25,7 +25,7 @@ const GetStarted = ({ navigation }: any) => {
         
         <TouchableOpacity
           style={styles.skip}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.replace('Tabs')}
         >
           <Text style={styles.skipText}>Skip</Text>
         </TouchableOpacity>

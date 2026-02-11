@@ -12,7 +12,8 @@ import {
 } from 'react-native-safe-area-context';
 
 import AppNavigator from './src/navigation/StackNavigation';
-import GetStarted from './src/screens/public/auth/GetStarted';
+// import 'react-native-reanimated';
+
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';

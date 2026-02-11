@@ -9,6 +9,7 @@ import ForgotPassword from '../screens/public/auth/ForgetPassword';
 import ResetPassword from '../screens/public/auth/ResetPassword';
 import GetStarted from '../screens/public/auth/GetStarted';
 import Tabs from './bottomtabs/Tabs';
+import PropertyDetails from '../screens/protected/PropertyDetails';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -20,6 +21,7 @@ export type RootStackParamList = {
    ResetPassword: undefined;  
    GetStarted: undefined;  
    Tabs: undefined;  
+   PropertyDetails: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -36,6 +38,9 @@ export default function AppNavigator() {
         <Stack.Screen name="ForgetPassword" component={ForgotPassword} />
         <Stack.Screen name="ResetPassword" component={ResetPassword} />
         <Stack.Screen name="Tabs" component={Tabs} />
+        <Stack.Screen name="PropertyDetails" component={PropertyDetails} />
+        
+
 
         
       </Stack.Navigator>

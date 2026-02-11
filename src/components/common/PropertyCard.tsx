@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import Images from '../../theams/images';
 
 interface Props {
   item: any;
@@ -11,7 +12,8 @@ const PropertyCard = ({ item, navigation }: Props) => {
   return (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('PropertyDetails')}
+      onPress={() => navigation.navigate('PropertyDetails', { property: item })}
+
     >
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>{item.title}</Text>
@@ -21,7 +23,7 @@ const PropertyCard = ({ item, navigation }: Props) => {
       </View>
 
       <View>
-        <Image source={{ uri: item.image }} style={styles.image} />
+        <Image source={item.images[0]} style={styles.image} />
 
         <TouchableOpacity style={styles.heart}>
           <Text>♡</Text>

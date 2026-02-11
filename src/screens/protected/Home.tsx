@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import DashboardHeader from '../../components/common/DashboardHeader';
 import PropertyCard from '../../components/common/PropertyCard';
 import Feather from 'react-native-vector-icons/Feather';
 import { Dropdown } from 'react-native-element-dropdown';
+import Images from '../../theams/images';
 
-const Dashboard = ({ navigation }: any) => {
+const Home = ({ navigation }: any) => {
 
-  // ---------------- DUMMY PROPERTY DATA ----------------
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [bhk, setBhk] = useState(null);
+  const [propertyType, setPropertyType] = useState(null);
+  const [furnishing, setFurnishing] = useState(null);
+
   const properties = [
     {
       id: '1',
@@ -17,7 +28,13 @@ const Dashboard = ({ navigation }: any) => {
       location: 'JP Nagar, Bangalore',
       price: '₹84.42 Lac - 1.12 cr',
       sqft: '₹6,700 /sqft',
-      image: 'https://via.placeholder.com/150'
+      images: [
+      Images.BMRBhoomikaMayflower,
+      Images.BMRBhoomika1,
+      Images.BMRBhoomika2,
+      Images.BMRBhoomika3,
+      Images.BMRBhoomika4,
+    ]
     },
     {
       id: '2',
@@ -25,23 +42,19 @@ const Dashboard = ({ navigation }: any) => {
       location: 'HSR Layout, Bangalore',
       price: '₹90 Lac - 1.30 cr',
       sqft: '₹7,200 /sqft',
-      image: 'https://via.placeholder.com/150'
-    },
-    {
-      id: '3',
-      title: 'Green Valley Homes',
-      location: 'HSR Layout, Bangalore',
-      price: '₹90 Lac - 1.30 cr',
-      sqft: '₹7,200 /sqft',
-      image: 'https://via.placeholder.com/150'
+        images: [
+      Images.BMRBhoomikaImage2,
+      Images.BMRBhoomika1,
+      Images.BMRBhoomika2,
+      Images.BMRBhoomika3,
+      Images.BMRBhoomika4,
+    ]
     }
   ];
 
-  // ---------------- DROPDOWN DATA ----------------
   const bhkData = [
     { label: '1 BHK', value: '1' },
     { label: '2 BHK', value: '2' },
-    { label: '3 BHK', value: '3' },
   ];
 
   const typeData = [
@@ -51,14 +64,8 @@ const Dashboard = ({ navigation }: any) => {
 
   const furnishData = [
     { label: 'Furnished', value: '1' },
-    { label: 'Semi Furnished', value: '2' },
-    { label: 'Unfurnished', value: '3' },
+    { label: 'Unfurnished', value: '2' },
   ];
-
-  // ---------------- STATES ----------------
-  const [bhk, setBhk] = useState(null);
-  const [propertyType, setPropertyType] = useState(null);
-  const [furnishing, setFurnishing] = useState(null);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,15 +78,11 @@ const Dashboard = ({ navigation }: any) => {
         <Text style={styles.searchText}>
           Search by location, project...
         </Text>
-        <Feather name="
-        
-        
-        " size={18} color="#000" />
+        <Feather name="sliders" size={18} color="#000" />
       </View>
 
       {/* FILTER DROPDOWNS */}
       <View style={styles.filterRow}>
-
         <Dropdown
           style={styles.dropdown}
           data={bhkData}
@@ -95,7 +98,7 @@ const Dashboard = ({ navigation }: any) => {
           data={typeData}
           labelField="label"
           valueField="value"
-          placeholder="Property Type"
+          placeholder="Type"
           value={propertyType}
           onChange={item => setPropertyType(item.value)}
         />
@@ -105,43 +108,79 @@ const Dashboard = ({ navigation }: any) => {
           data={furnishData}
           labelField="label"
           valueField="value"
-          placeholder="Furnishing"
+          placeholder="Furnish"
           value={furnishing}
           onChange={item => setFurnishing(item.value)}
         />
-
       </View>
 
-      {/* TRENDING HEADER */}
+      {/* TRENDING + TOGGLE */}
       <View style={styles.sectionHeader}>
         <View>
           <Text style={styles.trending}>Trending Near Property</Text>
           <Text style={styles.total}>Total 20 property found</Text>
         </View>
 
-        <View style={{ flexDirection: 'row', gap: 12 }}>
-          <Feather name="list" size={18} color="#000" />
-          <Feather name="map" size={18} color="#000" />
+        <View style={styles.toggleContainer}>
+          <TouchableOpacity
+            style={[
+              styles.toggleButton,
+              viewMode === 'list' && styles.activeToggle
+            ]}
+            onPress={() => setViewMode('list')}
+          >
+            <Feather
+              name="list"
+              size={18}
+              color={viewMode === 'list' ? '#FFF' : '#000'}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.toggleButton,
+              viewMode === 'map' && styles.activeToggle
+            ]}
+            onPress={() => setViewMode('map')}
+          >
+            <Feather
+              name="map"
+              size={18}
+              color={viewMode === 'map' ? '#FFF' : '#000'}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
-      {/* PROPERTY LIST SECTION */}
-      <View style={styles.propertySection}>
-        <FlatList
-          data={properties}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <PropertyCard item={item} navigation={navigation} />
-          )}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
+      {/* CONTENT SWITCH */}
+      {viewMode === 'list' ? (
+        <View style={styles.propertySection}>
+          <FlatList
+            data={properties}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <PropertyCard item={item} navigation={navigation} />
+            )}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      ) : (
+        <View style={styles.mapContainer}>
+          <View style={styles.fakeMap}>
+            <Text style={{ fontSize: 16, fontWeight: '600' }}>
+              Map View (Google Map will be here)
+            </Text>
+          </View>
+        </View>
+      )}
 
     </SafeAreaView>
   );
 };
 
-export default Dashboard;
+export default Home;
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -199,13 +238,92 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
   },
 
-  propertySection: {
-    backgroundColor: '#FFF',
-    marginTop: verticalScale(15),
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    paddingTop: verticalScale(10),
-    paddingHorizontal: scale(20),
-    flex: 1,
-  },
+  
+
+mapTitle: {
+  fontSize: moderateScale(16),
+  fontWeight: '600',
+  marginBottom: verticalScale(15),
+},
+
+
+activeButton:{
+  borderWidth:2,
+  elevation:5,
+  backgroundColor:'black',
+  borderRadius:50,
+ 
+  justifyContent:'center',
+  alignItems:'center'
+},
+
+mapButton: {
+  borderRadius: 50,
+
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+
+mapSection: {
+  marginTop: verticalScale(40),
+  paddingBottom: verticalScale(120),
+},
+
+mapBox: {
+  height: verticalScale(300),
+  backgroundColor: '#DDD',
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+
+toggleContainer: {
+  flexDirection: 'row',
+  backgroundColor: '#F3F3F3',
+  borderRadius: 12,
+  padding: 4,
+},
+
+toggleButton: {
+  width: scale(40),
+  height: scale(40),
+  borderRadius: 8,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+activeToggle: {
+  backgroundColor: '#000',
+},
+
+propertySection: {
+  flex: 1,
+  backgroundColor: '#FFF',
+  marginTop: verticalScale(15),
+  borderTopLeftRadius: 25,
+  borderTopRightRadius: 25,
+  paddingHorizontal: scale(20),
+  paddingTop: verticalScale(15),
+},
+
+mapContainer: {
+  flex: 1,
+  marginTop: verticalScale(15),
+  paddingHorizontal: scale(20),
+},
+
+fakeMap: {
+  flex: 1,
+  backgroundColor: '#DDD',
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+
+
+
+
 });
