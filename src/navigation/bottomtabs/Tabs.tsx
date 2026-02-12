@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/Feather';
 import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
 
 import Home from '../../screens/protected/Home';
-import Filter from '../../screens/protected/Filter';
-import Chat from '../../screens/protected/Chat';
 import Profile from '../../screens/protected/Profile';
+import EMICalculator from '../../screens/protected/EMICalculator';
+import MessagesScreen from '../../screens/protected/MessagesScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,8 +33,8 @@ export default function Tabs() {
       let iconName: any;
 
       if (route.name === 'Home') iconName = 'home';
-      else if (route.name === 'Filter') iconName = 'sliders';
-      else if (route.name === 'Chat') iconName = 'mail';
+      else if (route.name === 'EMICalculator') iconName = 'sliders';
+      else if (route.name === 'MessagesScreen') iconName = 'mail';
       else if (route.name === 'Profile') iconName = 'user';
 
       return focused ? (
@@ -49,8 +49,8 @@ export default function Tabs() {
 >
 
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Filter" component={Filter} />
-      <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name="EMICalculator" component={EMICalculator} />
+      <Tab.Screen name="MessagesScreen" component={MessagesScreen} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

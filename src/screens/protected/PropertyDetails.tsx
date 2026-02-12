@@ -11,6 +11,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import Feather from 'react-native-vector-icons/Feather';
 import Images from '../../theams/images';
+import { useForm, Controller } from 'react-hook-form';
+import { Modal, TextInput } from 'react-native';
+
 
 const PropertyDetails = ({ route, navigation }: any) => {
 
@@ -19,6 +22,16 @@ const PropertyDetails = ({ route, navigation }: any) => {
 
   const { property } = route.params;
 const [selectedImage, setSelectedImage] = useState(property.images[0]);
+
+const [callModalVisible, setCallModalVisible] = useState(false);
+
+const {
+  control,
+  handleSubmit,
+  formState: { errors },
+  reset,
+} = useForm();
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -141,7 +154,11 @@ const [selectedImage, setSelectedImage] = useState(property.images[0]);
         <Text style={styles.messageText}>Send Message</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.callBtn}>
+      <TouchableOpacity
+  style={styles.callBtn}
+  onPress={() => setCallModalVisible(true)}
+>
+
         <Text style={styles.callText}>Schedule a Call</Text>
       </TouchableOpacity>
 
@@ -253,6 +270,118 @@ const [selectedImage, setSelectedImage] = useState(property.images[0]);
         </View>
 
       </ScrollView>
+
+
+      <Modal
+  visible={callModalVisible}
+  transparent
+  animationType="fade"
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalContainer}>
+
+      {/* CLOSE BUTTON */}
+      <TouchableOpacity
+        style={styles.closeCircle}
+        onPress={() => {
+          setCallModalVisible(false);
+          reset();
+        }}
+      >
+        <Feather name="x" size={18} color="#000" />
+      </TouchableOpacity>
+
+      <Text style={styles.modalTitle}>Schedule a Call</Text>
+      <Text style={styles.modalSubtitle}>
+        Please share the details required to arrange a call for these properties
+      </Text>
+
+      {/* PHONE INPUT */}
+      <Text style={styles.inputLabel}>Contact Phone Number</Text>
+      <Controller
+        control={control}
+        rules={{
+          required: 'Phone number is required',
+          pattern: {
+            value: /^[0-9]{10}$/,
+            message: 'Enter valid 10 digit number'
+          }
+        }}
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={styles.input}
+            keyboardType="number-pad"
+            placeholder="Enter phone number"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
+        name="phone"
+      />
+      {errors.phone && (
+        <Text style={styles.errorText}>{errors.phone.message as string}</Text>
+      )}
+
+      {/* EMAIL INPUT */}
+      <Text style={styles.inputLabel}>Contact Email Address</Text>
+      <Controller
+        control={control}
+        rules={{
+          required: 'Email is required',
+          pattern: {
+            value: /^\S+@\S+$/i,
+            message: 'Enter valid email'
+          }
+        }}
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Enter email address"
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
+        name="email"
+      />
+      {errors.email && (
+        <Text style={styles.errorText}>{errors.email.message as string}</Text>
+      )}
+
+      {/* MESSAGE INPUT */}
+      <Text style={styles.inputLabel}>Message</Text>
+      <Controller
+        control={control}
+        rules={{ required: 'Message is required' }}
+        render={({ field: { onChange, value } }) => (
+          <TextInput
+            style={[styles.input, { height: 80 }]}
+            placeholder="Write your message"
+            multiline
+            value={value}
+            onChangeText={onChange}
+          />
+        )}
+        name="message"
+      />
+      {errors.message && (
+        <Text style={styles.errorText}>{errors.message.message as string}</Text>
+      )}
+
+      <TouchableOpacity
+        style={styles.requestBtn}
+        onPress={handleSubmit((data) => {
+          console.log(data);
+          setCallModalVisible(false);
+          reset();
+        })}
+      >
+        <Text style={styles.requestText}>Request For a Call</Text>
+      </TouchableOpacity>
+
+    </View>
+  </View>
+</Modal>
+
     </SafeAreaView>
   );
 };
@@ -531,6 +660,78 @@ activeThumbnail: {
   borderWidth: 2,
   borderColor: '#FFD600',
 },
+modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.6)',
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
+modalContainer: {
+  width: '85%',
+  backgroundColor: '#FFF',
+  borderRadius: 20,
+  padding: 20,
+},
+
+closeCircle: {
+  position: 'absolute',
+  top: -20,
+  alignSelf: 'center',
+  backgroundColor: '#FFF',
+  width: 40,
+  height: 40,
+  borderRadius: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  elevation: 5,
+},
+
+modalTitle: {
+  fontSize: 18,
+  fontWeight: '600',
+  textAlign: 'center',
+  marginTop: 20,
+},
+
+modalSubtitle: {
+  fontSize: 13,
+  color: '#777',
+  textAlign: 'center',
+  marginVertical: 10,
+},
+
+inputLabel: {
+  marginTop: 15,
+  fontWeight: '500',
+},
+
+input: {
+  borderWidth: 1,
+  borderColor: '#DDD',
+  borderRadius: 10,
+  padding: 12,
+  marginTop: 5,
+},
+
+errorText: {
+  color: 'red',
+  fontSize: 12,
+},
+
+requestBtn: {
+  backgroundColor: '#FFD600',
+  paddingVertical: 14,
+  borderRadius: 10,
+  marginTop: 20,
+  alignItems: 'center',
+},
+
+requestText: {
+  fontWeight: '600',
+  fontSize: 14,
+},
+
 
 
 
