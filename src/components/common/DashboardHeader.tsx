@@ -2,32 +2,42 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import Feather from 'react-native-vector-icons/Feather';
-import Colors from '../../theams/Colors';
 import Images from '../../theams/images';
 
-const DashboardHeader = () => {
+interface Props {
+  showBackground?: boolean;   
+}
+
+const DashboardHeader: React.FC<Props> = ({
+  showBackground = false,    
+}) => {
   return (
-    <View style={styles.container}>
-      
-    
-      <View style={styles.userCard}>
-       
-        <Image
-          source={Images.userImage}  
-          style={styles.avatar}
-        />
+    <View
+      style={[
+        styles.wrapper,
+        {
+         backgroundColor: showBackground ? '#FFF5E3' : 'transparent'
+        },
+      ]}
+    >
+      <View style={styles.container}>
+        <View style={styles.userCard}>
+          <Image
+            source={Images.userImage}
+            style={styles.avatar}
+          />
 
-        <View style={{ marginLeft: scale(10) }}>
-          <Text style={styles.name}>Ronald Richards</Text>
-          <Text style={styles.email}>blissandes@example.com</Text>
+          <View style={{ marginLeft: scale(10) }}>
+            <Text style={styles.name}>Ronald Richards</Text>
+            <Text style={styles.email}>blissandes@example.com</Text>
+          </View>
         </View>
-      </View>
 
-      
-      <TouchableOpacity style={styles.bellContainer}>
-        <Feather name="bell" size={20} color="#000" />
-        <View style={styles.badge} />
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.bellContainer}>
+          <Feather name="bell" size={20} color="#000" />
+          <View style={styles.badge} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -35,11 +45,15 @@ const DashboardHeader = () => {
 export default DashboardHeader;
 
 const styles = StyleSheet.create({
+  wrapper: {
+    paddingTop: verticalScale(10),
+    paddingBottom: verticalScale(10),
+  },
+
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: scale(20),
-    marginTop: verticalScale(10),
   },
 
   userCard: {

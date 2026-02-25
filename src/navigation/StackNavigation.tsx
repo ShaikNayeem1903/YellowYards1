@@ -12,6 +12,7 @@ import Tabs from './bottomtabs/Tabs';
 import PropertyDetails from '../screens/protected/PropertyDetails';
 import MessagesScreen from '../screens/protected/MessagesScreen';
 import ChatScreen from '../screens/protected/ChatScreen';
+import Support from '../screens/protected/Support';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -26,6 +27,7 @@ export type RootStackParamList = {
    PropertyDetails: undefined;
    ChatScreen: undefined;
    MessagesScreen: undefined;
+   Support: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -44,7 +46,9 @@ export default function AppNavigator() {
         <Stack.Screen name="Tabs" component={Tabs} />
         <Stack.Screen name="PropertyDetails" component={PropertyDetails} />
         <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
-<Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="Support" component={Support} options={{ headerShown: false }} />
+       
 
         
 

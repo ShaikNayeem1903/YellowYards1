@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Feather';
-import { moderateScale, verticalScale, scale } from 'react-native-size-matters';
+import { verticalScale, scale } from 'react-native-size-matters';
 
 import Home from '../../screens/protected/Home';
 import Profile from '../../screens/protected/Profile';

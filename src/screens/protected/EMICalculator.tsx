@@ -14,6 +14,8 @@ import Svg, { Circle } from 'react-native-svg';
 
 import Feather from 'react-native-vector-icons/Feather';
 import { StatusBar } from 'react-native';
+import DashboardHeader from '../../components/common/DashboardHeader';
+import { verticalScale } from 'react-native-size-matters';
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -76,46 +78,27 @@ const principalStroke = circumference * principalPercentage;
 const interestStroke = circumference * interestPercentage;
 
 
-  return (
+ return (
   <>
     <StatusBar
-      backgroundColor="#E6D5B8"
+      backgroundColor="#FFF5E3"
       barStyle="dark-content"
     />
 
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#E6D5B8' }}>
-      {/* BODY BACKGROUND */}
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF5E3' }}>
+
+      {/* 🔥 TOP BEIGE HEADER SECTION */}
+      <View style={styles.topSection}>
+        <DashboardHeader showBackground />
+      </View>
+      {/* BODY */}
       <View style={{ flex: 1, backgroundColor: '#F9F9F4' }}>
-        
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20 }}
         >
 
-          {/* HEADER */}
-          <View style={styles.topHeader}>
-            <View style={styles.profileRow}>
-              <Image
-                source={{ uri: 'https://i.pravatar.cc/150?img=3' }}
-                style={styles.profileImage}
-              />
-              <View>
-                <Text style={styles.profileName}>
-                  Ronald Richards
-                </Text>
-                <Text style={styles.profileEmail}>
-                  bill.sanders@azuretile.com
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.bellWrapper}>
-              <Feather name="bell" size={24} color="#000" />
-              <View style={styles.notificationDot}>
-                <Text style={styles.notificationText}>2</Text>
-              </View>
-            </View>
-          </View>
+         
 
           {/* CIBIL CARD */}
           <TouchableOpacity style={styles.cibilCard}>
@@ -314,69 +297,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F4',
     paddingHorizontal: 20,
   },
-
-  topHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 25,
-    marginTop: 10,
-  },
-
-  profileRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
-  },
-
-  profileName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#000',
-  },
-
-  profileEmail: {
-    fontSize: 12,
-    color: '#777',
-    marginTop: 2,
-  },
-
-  bellWrapper: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 3,
-  },
-
-  notificationDot: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: '#FF3B30',
-    borderRadius: 10,
-    minWidth: 16,
-    height: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 3,
-  },
-
-  notificationText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: '600',
-  },
-
-
+  topSection: {
+      paddingBottom: verticalScale(1),
+    },
+  
   cibilCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
