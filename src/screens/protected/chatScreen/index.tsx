@@ -1,0 +1,65 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Feather';
+import { styles } from './style';
+
+const ChatScreen = ({ route, navigation }: any) => {
+
+  const { user } = route.params;
+
+  return (
+    <SafeAreaView style={styles.container}>
+
+      {/* HEADER */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={22} />
+        </TouchableOpacity>
+
+        <Image source={user.image} style={styles.avatar} />
+
+        <View>
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.online}>Online</Text>
+        </View>
+      </View>
+
+      {/* CHAT BODY */}
+      <View style={styles.chatContainer}>
+        <View style={styles.messageLeft}>
+          <Text>Lorem Ipsum is simply dummy text</Text>
+        </View>
+
+        <View style={styles.messageRight}>
+          <Text>It is a long established fact that a reader will be distracted</Text>
+        </View>
+      </View>
+
+      {/* INPUT */}
+      <View style={styles.inputContainer}>
+        <Icon name="plus" size={20} color="#999" />
+
+        <TextInput
+          placeholder="Type here..."
+          style={{ flex: 1, marginHorizontal: 10 }}
+        />
+
+        <TouchableOpacity style={styles.sendBtn}>
+          <Icon name="send" size={18} color="#000" />
+        </TouchableOpacity>
+      </View>
+
+    </SafeAreaView>
+  );
+};
+
+export default ChatScreen;
+

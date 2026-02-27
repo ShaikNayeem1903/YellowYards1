@@ -8,6 +8,7 @@ import {
   ScrollView,
   Switch,
   Modal,
+
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
@@ -15,11 +16,26 @@ import Feather from 'react-native-vector-icons/Feather';
 import DashboardHeader from '../../components/common/DashboardHeader';
 import Images from '../../theams/images';
 import { verticalScale } from 'react-native-size-matters';
+import { useForm, Controller } from "react-hook-form";
+import FormInput from '../../components/common/FormInput';
+import FormDropdown from '../../components/common/FormDropdown';
+import Inquiries from './Inquiries';
+
 
 const Profile = ( {navigation} : any) => {
-  const [locationEnabled, setLocationEnabled] = useState(false);
-  const [pushEnabled, setPushEnabled] = useState(true);
-  const [menuVisible, setMenuVisible] = useState(false);
+ const [editVisible, setEditVisible] = useState(false);
+const [passwordVisible, setPasswordVisible] = useState(false);
+const [cityVisible, setCityVisible] = useState(false);
+const [locationEnabled, setLocationEnabled] = useState(false);
+const [pushEnabled, setPushEnabled] = useState(true);
+const [menuVisible, setMenuVisible] = useState(false);
+const [city, setCity] = useState("");
+const [showOld, setShowOld] = useState(true);
+const [showNew, setShowNew] = useState(true);
+const [showConfirm, setShowConfirm] = useState(true);
+const { control, handleSubmit, watch, formState:{errors} } = useForm<any>();
+
+const newPass = watch("newPassword");
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -77,18 +93,8 @@ const Profile = ( {navigation} : any) => {
             </TouchableOpacity>
           </View>
 
-          {/* POPUP MENU */}
-          <Modal transparent visible={menuVisible} animationType="fade">
-            <TouchableOpacity
-              style={styles.modalOverlay}
-              onPress={() => setMenuVisible(false)}
-            >
-              <View style={styles.popupMenu}>
-                <Text style={styles.popupItem}>Edit Profile</Text>
-                <Text style={styles.popupItem}>Change Password</Text>
-              </View>
-            </TouchableOpacity>
-          </Modal>
+          
+
 
           {/* NOTIFICATION SETTINGS */}
           <Text style={styles.sectionTitle}>Notification Settings</Text>
@@ -120,7 +126,10 @@ const Profile = ( {navigation} : any) => {
           {/* INQUIRIES */}
           <View style={styles.sectionRow}>
             <Text style={styles.sectionTitle}>Inquiries</Text>
-            <Text style={styles.viewBtn}>View All</Text>
+            <TouchableOpacity onPress={ () =>navigation.navigate('Inquiries')}>
+              <Text style={styles.viewBtn} >View All</Text>
+            </TouchableOpacity>
+            
           </View>
 
           {[1, 2].map((_, index) => (
@@ -151,7 +160,9 @@ const Profile = ( {navigation} : any) => {
           {/* CALL HISTORY */}
           <View style={styles.sectionRow}>
             <Text style={styles.sectionTitle}>Call History</Text>
-            <Text style={styles.viewBtn}>View All</Text>
+           <TouchableOpacity onPress={ () =>navigation.navigate('CallHistory')}>
+              <Text style={styles.viewBtn} >View All</Text>
+            </TouchableOpacity>
           </View>
 
           {[1, 2, 3].map((_, index) => (
@@ -186,6 +197,183 @@ const Profile = ( {navigation} : any) => {
           <Text style={styles.supportText}>Support</Text>
         </TouchableOpacity>
       </View>
+
+          {/* POPUP MENU */} 
+          <Modal transparent visible={menuVisible} animationType="fade">
+             <View style={styles.modalOverlay}> 
+              {/* OUTSIDE TOUCH */} 
+              <TouchableOpacity style={StyleSheet.absoluteFill} onPress={() => setMenuVisible(false)} /> 
+                {/* MENU */} 
+                <View style={styles.popupMenu}> 
+                  <TouchableOpacity onPress={() => { setMenuVisible(false); setEditVisible(true); }} > 
+                    <Text style={styles.popupItem}>Edit Profile</Text>
+
+                     </TouchableOpacity> 
+                     
+                     <TouchableOpacity onPress={() => { setMenuVisible(false); setPasswordVisible(true); }} >
+                       <Text style={styles.popupItem}>Change Password</Text>
+                        </TouchableOpacity> 
+
+                        </View> 
+                        </View> 
+                        </Modal>
+      
+
+    <Modal transparent visible={editVisible} animationType="fade">
+
+
+  
+<View style={styles.overlay}>
+  <View style={styles.sheetWrapper}>
+    
+
+    <TouchableOpacity style={styles.figmaClose} onPress={()=>setEditVisible(false)}>
+      <Text style={{fontSize:30}}>×</Text>
+    </TouchableOpacity>
+
+    
+  <View style={styles.sheet}>
+    <Text style={styles.sheetTitle}>Edit Profile</Text>
+    <Text style={styles.sheetSub}>
+      Please review, update, and save your profile information to keep your information current.
+    </Text>
+
+    {/* NAME */}
+    <Controller
+      control={control}
+      name="name"
+      rules={{required:"Name required"}}
+      render={({field:{onChange,value}})=>(
+        <FormInput label="Name" placeholder="Enter your name" value={value} onChangeText={onChange}/>
+      )}
+    />
+    {errors.name && <Text style={styles.err}>{String(errors.name.message)}</Text>}
+
+    {/* EMAIL */}
+    <Controller
+      control={control}
+      name="email"
+      rules={{
+        required:"Email required",
+        pattern:{value:/^\S+@\S+\.\S+$/,message:"Invalid email"}
+      }}
+      render={({field:{onChange,value}})=>(
+        <FormInput label="Email Address" placeholder="Enter email address" value={value} onChangeText={onChange}/>
+      )}
+    />
+    {errors.email && <Text style={styles.err}>{String(errors.email.message)}</Text>}
+
+    {/* PHONE */}
+    <Controller
+      control={control}
+      name="phone"
+      rules={{
+        required:"Phone required",
+        pattern:{value:/^[0-9]{10}$/,message:"Enter 10 digit phone"}
+      }}
+      render={({field:{onChange,value}})=>(
+        <FormInput label="Phone Number" placeholder="Enter phone number" value={value} onChangeText={onChange}/>
+      )}
+    />
+    {errors.phone && <Text style={styles.err}>{String(errors.phone.message)}</Text>}
+
+    {/* CITY */}
+    <TouchableOpacity onPress={()=>setCityVisible(true)}>
+      <FormDropdown label="Preferred City" value={city}/>
+    </TouchableOpacity>
+
+    {/* SUBMIT */}
+    <TouchableOpacity
+      style={styles.saveBtn}
+      onPress={handleSubmit((d)=>{console.log(d,city);setEditVisible(false)})}
+    >
+      <Text style={styles.saveTxt}>Save and Update</Text>
+    </TouchableOpacity>
+
+  </View>
+</View>
+</View>
+</Modal>
+
+
+
+<Modal transparent visible={cityVisible} animationType="fade">
+<TouchableOpacity style={styles.overlay} onPress={()=>setCityVisible(false)}>
+  <View style={styles.cityBox}>
+    {['Bangalore','Hyderabad','Chennai','Mumbai'].map(c=>(
+      <TouchableOpacity key={c} onPress={()=>{setCity(c);setCityVisible(false)}}>
+        <Text style={styles.cityItem}>{c}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+</TouchableOpacity>
+</Modal>
+
+<Modal transparent visible={passwordVisible} animationType="fade">
+<View style={styles.overlay}>
+  <View style={styles.sheetWrapper}>
+
+    <TouchableOpacity style={styles.figmaClose} onPress={()=>setPasswordVisible(false)}>
+      <Text style={{fontSize:30}}>×</Text>
+    </TouchableOpacity>
+
+  
+    </View>
+
+  <View style={styles.sheet}>
+    <Text style={styles.sheetTitle}>Change Password</Text>
+    <Text style={styles.sheetSub}>
+      Secure your account by updating your password regularly.
+    </Text>
+
+    <Controller
+      control={control}
+      name="old"
+      rules={{required:"Required"}}
+      render={({field:{onChange,value}})=>(
+        <FormInput label="Old Password" placeholder="Enter old password"
+          value={value} onChangeText={onChange}
+          secure={showOld} showIcon toggleSecure={()=>setShowOld(!showOld)}
+        />
+      )}
+    />
+
+    <Controller
+      control={control}
+      name="newPassword"
+      rules={{required:"Required",minLength:6}}
+      render={({field:{onChange,value}})=>(
+        <FormInput label="New Password" placeholder="Enter new password"
+          value={value} onChangeText={onChange}
+          secure={showNew} showIcon toggleSecure={()=>setShowNew(!showNew)}
+        />
+      )}
+    />
+
+    <Controller
+      control={control}
+      name="confirm"
+      rules={{
+        validate:(v:any)=> v===newPass || "Passwords not match"
+      }}
+      render={({field:{onChange,value}})=>(
+        <FormInput label="Confirm Password" placeholder="Enter confirm password"
+          value={value} onChangeText={onChange}
+          secure={showConfirm} showIcon toggleSecure={()=>setShowConfirm(!showConfirm)}
+        />
+      )}
+    />
+
+    <TouchableOpacity style={styles.saveBtn} onPress={handleSubmit(()=>setPasswordVisible(false))}>
+      <Text style={styles.saveTxt}>Save and Update</Text>
+    </TouchableOpacity>
+
+  </View>
+</View>
+</Modal>
+
+
+      
     </SafeAreaView>
   );
 };
@@ -320,14 +508,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.15)',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
-    paddingTop: 160,
-    paddingRight: 30,
-  },
+modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.15)',
+  justifyContent: 'flex-start',
+  alignItems: 'flex-end',
+  paddingTop: 160,
+  paddingRight: 30,
+
+  zIndex: 9999,
+  elevation: 9999,
+},
 
   popupMenu: {
     backgroundColor: '#fff',
@@ -359,4 +550,82 @@ const styles = StyleSheet.create({
 
   zIndex: 999,
 },
+
+
+input:{borderWidth:1,borderColor:'#ddd',padding:12,borderRadius:12,marginVertical:8},
+
+
+bottomOverlay:{
+ flex:1,
+ backgroundColor:'rgba(0,0,0,0.45)',
+ justifyContent:'flex-end'
+},
+
+
+close:{
+ alignSelf:'center',
+ backgroundColor:'#F5F4EE',
+ width:42,
+ height:42,
+ borderRadius:21,
+ alignItems:'center',
+ justifyContent:'center',
+ marginBottom:10
+},
+
+modalTitle:{
+ fontSize:20,
+ fontWeight:'700',
+ textAlign:'center'
+},
+
+modalSub:{
+ textAlign:'center',
+ color:'#777',
+ marginTop:6,
+ marginBottom:18,
+ fontSize:13,
+ lineHeight:18
+},
+
+sheetWrapper:{
+ width:'100%',
+ alignItems:'center'
+},
+
+overlay:{flex:1,backgroundColor:'rgba(0,0,0,0.35)',justifyContent:'flex-end',alignItems:'center'},
+
+figmaClose:{
+ position:'absolute',
+ top:-verticalScale(50),
+ alignSelf:'center',
+ backgroundColor:'#F5F4EE',
+ width:46,
+ height:46,
+ borderRadius:23,
+ alignItems:'center',
+ justifyContent:'center',
+ zIndex:10,
+ elevation:10
+},
+sheet:{
+ backgroundColor:'#fff',
+ borderTopLeftRadius:28,
+ borderTopRightRadius:28,
+ paddingHorizontal:24,
+ paddingTop:20,
+ paddingBottom:30,
+ width:'100%'
+},
+
+sheetTitle:{fontSize:20,fontWeight:'700',textAlign:'center'},
+sheetSub:{textAlign:'center',color:'#777',marginVertical:8},
+
+saveBtn:{backgroundColor:'#FFE600',padding:16,borderRadius:12,marginTop:16,alignItems:'center'},
+saveTxt:{fontWeight:'700'},
+
+err:{color:'red',fontSize:12,marginLeft:6},
+
+cityBox:{backgroundColor:'#fff',padding:20,borderRadius:16,width:'80%'},
+cityItem:{paddingVertical:12,fontSize:16}
 });

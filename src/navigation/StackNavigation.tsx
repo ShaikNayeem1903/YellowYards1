@@ -13,6 +13,8 @@ import PropertyDetails from '../screens/protected/PropertyDetails';
 import MessagesScreen from '../screens/protected/MessagesScreen';
 import ChatScreen from '../screens/protected/ChatScreen';
 import Support from '../screens/protected/Support';
+import Inquiries from '../screens/protected/Inquiries';
+import CallHistory from '../screens/protected/callHistory/index';
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -28,6 +30,8 @@ export type RootStackParamList = {
    ChatScreen: undefined;
    MessagesScreen: undefined;
    Support: undefined;
+   Inquiries: undefined;
+   CallHistory: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -48,6 +52,8 @@ export default function AppNavigator() {
         <Stack.Screen name="MessagesScreen" component={MessagesScreen} />
         <Stack.Screen name="ChatScreen" component={ChatScreen} />
         <Stack.Screen name="Support" component={Support} options={{ headerShown: false }} />
+        <Stack.Screen name="Inquiries" component={Inquiries} />
+        <Stack.Screen name="CallHistory" component={CallHistory} />
        
 
         
